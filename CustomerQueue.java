@@ -30,4 +30,5 @@ public class CustomerQueue {
     	gui.emptyBarberChair((int)waitingroomChairNumberer.remove());
 		return (Customer) waitingroom.remove();
 	}
+    
 }
