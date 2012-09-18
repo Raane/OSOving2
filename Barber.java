@@ -27,6 +27,7 @@ public class Barber extends Thread{
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
+		gui.println("barber is barbering people");
 		working = true;
 		start();
 	}

@@ -19,10 +19,13 @@ public class CustomerQueue {
     public CustomerQueue(int queueLength, Gui gui) {
     	this.waitingroom = new CircularFifoBuffer(queueLength);
 		this.gui = gui;
+		this.gui.println("created the queue");
 	}
     public synchronized void addCustomer(Customer customer) {
+    	gui.println("adding a customer. Waitingroom is full: " + waitingroom.isFull());
     	while(waitingroom.isFull()) {
     		try {
+    			gui.println("addCustomer waiting");
 				wait(); 	// wait until notified
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -43,6 +46,7 @@ public class CustomerQueue {
 		Customer customer = null;
     	while(waitingroom.isEmpty()) {
 			try {
+				gui.println("getCustomer waiting");
 				wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

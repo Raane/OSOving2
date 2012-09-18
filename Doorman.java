@@ -8,7 +8,7 @@ public class Doorman extends Thread{
 	
 	private CustomerQueue queue = null;
 	private Gui gui = null;
-	private boolean throwingInPeople = false;
+	private boolean throwingInPeople = true;
 	
 	/**
 	 * Creates a new doorman.
@@ -24,6 +24,7 @@ public class Doorman extends Thread{
 	 * Starts the doorman running as a separate thread.
 	 */
 	public void startThread() {
+		gui.println("doorman is throwing in people");
 		throwingInPeople = true;
 		start();
 	}
@@ -37,6 +38,7 @@ public class Doorman extends Thread{
 
 	public void throwingInPeople() {
 		try {
+			gui.println("doorman sleeping:");
 			sleep(Globals.doormanSleep);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
