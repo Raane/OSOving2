@@ -20,15 +20,42 @@ public class CustomerQueue {
     	this.waitingroom = new CircularFifoBuffer(queueLength);
 		this.gui = gui;
 	}
-    public void addCustomer(Customer customer) {
-		waitingroom.add(customer);
+    public synchronized void addCustomer(Customer customer) {
+    	while(waitingroom.isFull()) {
+    		try {
+				wait(); 	// wait until notified
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	boolean empty = waitingroom.isEmpty();
+    	addCustomerToWaitingRoom(customer);
+    	if(empty) notifyAll();
+	}
+    public void addCustomerToWaitingRoom(Customer customer) {
+    	waitingroom.add(customer);
 		waitingroomChairNumberer.add((int)itarator);
 		gui.fillBarberChair(itarator, customer);
 		itarator = (itarator+1)%waitingroom.maxSize();
 	}
-    public Customer getCustomer() {
+    public synchronized Customer getCustomer() {
+		Customer customer = null;
+    	while(waitingroom.isEmpty()) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    	boolean full = waitingroom.isFull();
+    	customer = getCustomerFromWaitingroom();
+    	if(full) notifyAll();
+    	return customer;
+	}
+    public Customer getCustomerFromWaitingroom() {
     	gui.emptyBarberChair((int)waitingroomChairNumberer.remove());
 		return (Customer) waitingroom.remove();
 	}
-    
 }
