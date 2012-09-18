@@ -1,3 +1,4 @@
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
 
 
 /**
@@ -10,17 +11,23 @@ public class CustomerQueue {
 	 * @param gui			A reference to the GUI interface.
 	 */
 	
-	private int queueLength = 0;
-	private boolean[] waitingroom = null;
+	private CircularFifoBuffer waitingroom = null;
+	private CircularFifoBuffer waitingroomChairNumberer = null;
 	private Gui gui = null;
+	private Integer itarator = 0;
 	
     public CustomerQueue(int queueLength, Gui gui) {
-		this.queueLength = queueLength;
+    	this.waitingroom = new CircularFifoBuffer(queueLength);
 		this.gui = gui;
-		this.waitingroom = new boolean[queueLength];
 	}
-    public void addCustomer() {
-		queueLength++;
-		
+    public void addCustomer(Customer customer) {
+		waitingroom.add(customer);
+		waitingroomChairNumberer.add((int)itarator);
+		gui.fillBarberChair(itarator, customer);
+		itarator = (itarator+1)%waitingroom.maxSize();
+	}
+    public Customer getCustomer() {
+    	gui.emptyBarberChair((int)waitingroomChairNumberer.remove());
+		return (Customer) waitingroom.remove();
 	}
 }
