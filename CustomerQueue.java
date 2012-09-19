@@ -66,7 +66,7 @@ public class CustomerQueue {
     	return customer;
 	}
     public Customer getCustomerFromWaitingroom() {
-    	gui.emptyLoungeChair((int)waitingroomChairNumberer.remove());
+    	//gui.emptyLoungeChair((int)waitingroomChairNumberer.remove());
 		return (Customer) waitingroom.remove();
 	}
 }

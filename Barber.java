@@ -29,7 +29,7 @@ public class Barber extends Thread{
 	public void startThread() {
 		gui.println("barber is starting barbering people");
 		working = true;
-		setName("Barber " + pos);
+		setName("Barber " + pos); // Names the Threads so it will be easier to identify error sources
 		start();
 	}
 
