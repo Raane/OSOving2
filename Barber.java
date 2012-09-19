@@ -27,8 +27,9 @@ public class Barber extends Thread{
 	 * Starts the barber running as a separate thread.
 	 */
 	public void startThread() {
-		gui.println("barber is barbering people");
+		gui.println("barber is starting barbering people");
 		working = true;
+		setName("Barber " + pos);
 		start();
 	}
 
@@ -39,7 +40,7 @@ public class Barber extends Thread{
 		working = false;
 	}
 
-	public void work() {
+	public void run() {
 		while(working) {
 			gui.barberIsSleeping(pos);
 			try {
@@ -48,15 +49,15 @@ public class Barber extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			gui.fillBarberChair(pos, new Customer());
+			gui.println("barber barbering");
+			gui.fillBarberChair(pos, queue.getCustomerFromWaitingroom()); //Temp
 			try {
 				sleep(Globals.barberWork);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			gui.barberIsAwake(pos);
 		}
-		gui.emptyBarberChair(pos);
 	}
 }
-

@@ -24,6 +24,7 @@ public class CustomerQueue {
     public synchronized void addCustomer(Customer customer) {
     	gui.println("adding a customer. Waitingroom is full: " + waitingroom.isFull());
     	while(waitingroom.isFull()) {
+    		gui.println("waitingroom full, waiting!");
     		try {
     			gui.println("addCustomer waiting");
 				wait(); 	// wait until notified
@@ -34,19 +35,22 @@ public class CustomerQueue {
     	}
     	boolean empty = waitingroom.isEmpty();
     	addCustomerToWaitingRoom(customer);
-    	if(empty) notifyAll();
+    	if(empty) {
+    		notifyAll();
+    		gui.println("addCustomer: notifying all");
+    	}
 	}
     public void addCustomerToWaitingRoom(Customer customer) {
     	waitingroom.add(customer);
 		waitingroomChairNumberer.add((int)itarator);
-		gui.fillBarberChair(itarator, customer);
+		gui.fillLoungeChair(itarator, customer);
 		itarator = (itarator+1)%waitingroom.maxSize();
 	}
     public synchronized Customer getCustomer() {
 		Customer customer = null;
     	while(waitingroom.isEmpty()) {
 			try {
-				gui.println("getCustomer waiting");
+				gui.println("waitingroom empty: getCustomer is waiting");
 				wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -55,11 +59,14 @@ public class CustomerQueue {
 		}
     	boolean full = waitingroom.isFull();
     	customer = getCustomerFromWaitingroom();
-    	if(full) notifyAll();
+    	if(full) {
+    		notifyAll();
+    		gui.println("getCustomer: notifying all");
+    	}
     	return customer;
 	}
     public Customer getCustomerFromWaitingroom() {
-    	gui.emptyBarberChair((int)waitingroomChairNumberer.remove());
+    	gui.emptyLoungeChair((int)waitingroomChairNumberer.remove());
 		return (Customer) waitingroom.remove();
 	}
 }
