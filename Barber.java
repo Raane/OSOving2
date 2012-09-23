@@ -59,6 +59,7 @@ public class Barber extends Thread{
 				e.printStackTrace();
 			}
 			gui.emptyBarberChair(pos);
+			queue.checkoutCustomer();
 		}
 	}
 }

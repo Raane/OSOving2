@@ -15,6 +15,7 @@ public class CustomerQueue {
 	private CircularFifoBuffer waitingroomChairNumberer = null;
 	private Gui gui = null;
 	private Integer itarator = 0;
+	private int cashierRegister = 0;
 	
     public CustomerQueue(int queueLength, Gui gui) {
     	this.waitingroom = new CircularFifoBuffer(queueLength);
@@ -72,5 +73,9 @@ public class CustomerQueue {
     public Customer getCustomerFromWaitingroom() {
     	gui.emptyLoungeChair((int)waitingroomChairNumberer.remove());
 		return (Customer) waitingroom.remove();
+	}
+	public void checkoutCustomer() {
+		this.cashierRegister ++;
+		gui.println("The cashier register holds payment for " + cashierRegister + " customers.");
 	}
 }
