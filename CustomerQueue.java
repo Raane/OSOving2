@@ -18,6 +18,7 @@ public class CustomerQueue {
 	
     public CustomerQueue(int queueLength, Gui gui) {
     	this.waitingroom = new CircularFifoBuffer(queueLength);
+    	this.waitingroomChairNumberer = new CircularFifoBuffer(queueLength);
 		this.gui = gui;
 		this.gui.println("created the queue");
 	}
@@ -49,14 +50,17 @@ public class CustomerQueue {
     public synchronized Customer getCustomer() {
 		Customer customer = null;
     	while(waitingroom.isEmpty()) {
+    		//gui.println("getCustomer is waiting because the waitingroom is empty");
+    		gui.println("waitingroom empty: getCustomer is waiting");
 			try {
-				gui.println("waitingroom empty: getCustomer is waiting");
 				wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			gui.println("notifyMethod called, resuming work.");
 		}
+    	gui.println("loop escaped!");
     	boolean full = waitingroom.isFull();
     	customer = getCustomerFromWaitingroom();
     	if(full) {
@@ -66,7 +70,7 @@ public class CustomerQueue {
     	return customer;
 	}
     public Customer getCustomerFromWaitingroom() {
-    	//gui.emptyLoungeChair((int)waitingroomChairNumberer.remove());
+    	gui.emptyLoungeChair((int)waitingroomChairNumberer.remove());
 		return (Customer) waitingroom.remove();
 	}
 }
