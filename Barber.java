@@ -50,6 +50,7 @@ public class Barber extends Thread{
 				e.printStackTrace();
 			}
 			gui.println("barber barbering");
+			gui.barberIsAwake(pos);
 			gui.fillBarberChair(pos, queue.getCustomer()); //Temp
 			try {
 				sleep(Globals.barberWork);
@@ -57,7 +58,7 @@ public class Barber extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			gui.barberIsAwake(pos);
+			gui.emptyBarberChair(pos);
 		}
 	}
 }
