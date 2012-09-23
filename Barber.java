@@ -50,7 +50,7 @@ public class Barber extends Thread{
 				e.printStackTrace();
 			}
 			gui.println("barber barbering");
-			gui.fillBarberChair(pos, queue.getCustomerFromWaitingroom()); //Temp
+			gui.fillBarberChair(pos, queue.getCustomer()); //Temp
 			try {
 				sleep(Globals.barberWork);
 			} catch (InterruptedException e) {
